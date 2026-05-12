@@ -18,14 +18,15 @@ from ..common.modules.logger import logger
 # =================================================================================================
 def heartbeat_sender_worker(
     connection: mavutil.mavfile,
-    args,  # Place your own arguments here
-    # Add other necessary worker arguments here
+    controller: worker_controller
 ) -> None:
     """
-    Worker process.
+    Worker process - shows that systems is active and responding. Sends a heartbeat message once per second.
 
-    args... describe what the arguments are
+    connection: MAVlink connection
+    controller: communication channel between the main process and this worker
     """
+    
     # =============================================================================================
     #                          ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
     # =============================================================================================
@@ -48,7 +49,21 @@ def heartbeat_sender_worker(
     # =============================================================================================
     # Instantiate class object (heartbeat_sender.HeartbeatSender)
 
+    status, heartbeat_sender_instance = heartbeat_sender.HeartbeatSender.create(connection, local_logger)
+
+    if not status:
+        local_logger.error("Failed to create heartbeat sender instance.", True)
+        return
+
     # Main loop: do work.
+    while not controller.is_exit_requested():
+        # GOAL - send HEARBEAT (0) once per second
+        controller.check_pause()
+        heartbeat_sender_instance.run()
+
+        time.sleep(1)
+
+
 
 
 # =================================================================================================
