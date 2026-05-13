@@ -1,0 +1,12 @@
+11:31:31: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 40] Logger initialized
+11:31:33: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:34: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:35: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:36: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:37: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:38: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:39: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:40: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:41: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:42: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 71] Drone: Recieved heartbeat!
+11:31:43: [ERROR] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 77] Recieved extra heartbeat
