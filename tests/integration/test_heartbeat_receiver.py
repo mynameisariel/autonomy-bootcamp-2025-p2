@@ -68,11 +68,16 @@ def read_queue(
     """
     Read and print the output queue.
     """
-    while True:
-        item = output_queue.queue.get(timeout=READ_QUEUE_TIMEOUT)
-        if item is None:
-            break 
-        main_logger.info(str(item), True)
+    while not controller.is_exit_requested():
+        try:
+            item = output_queue.queue.get(timeout=READ_QUEUE_TIMEOUT)
+
+            if item is None:
+                break 
+            main_logger.info(str(item), True)
+            
+        except Exception:
+            continue
 
 
 
