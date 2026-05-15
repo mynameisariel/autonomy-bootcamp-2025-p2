@@ -1,0 +1,15 @@
+19:05:30: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry_worker.py | telemetry_worker | 46] Logger initialized
+19:05:31: [ERROR] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 136] Error receiving local_position_ned_msg or atitude+msg
+19:05:32: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:33: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:34: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:35: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:36: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:37: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:38: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:39: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:40: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:41: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:42: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:43: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
+19:05:44: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\modules\telemetry\telemetry.py | run | 134] Telemetry data received successfully
