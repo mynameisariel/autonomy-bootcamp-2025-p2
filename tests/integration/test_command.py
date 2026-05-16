@@ -78,7 +78,8 @@ def read_queue(
             if output is None:
                 break
             main_logger.info(str(output), True)
-        except:
+        except (OSError, TypeError, AttributeError) as e:
+            main_logger.error(f"Exit requested: {e}", True)
             continue
 
 
