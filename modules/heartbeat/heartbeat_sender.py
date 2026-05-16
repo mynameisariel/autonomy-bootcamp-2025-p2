@@ -25,7 +25,7 @@ class HeartbeatSender:
         """
         try:
             return True, cls(cls.__private_key, connection, local_logger)
-        except Exception as e:
+        except (OSError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False, None
 
@@ -46,7 +46,7 @@ class HeartbeatSender:
             )
             self.logger.info("Heartbeast sent successfully", True)
             return True
-        except Exception as e:
+        except (OSError, TypeError, AttributeError) as e:
             self.logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False
 

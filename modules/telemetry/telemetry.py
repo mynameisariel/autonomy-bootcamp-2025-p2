@@ -84,7 +84,7 @@ class Telemetry:
         # Create a Telemetry object
         try:
             return True, cls(cls.__private_key, connection, local_logger)
-        except Exception as e:
+        except (OSError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create Telemetry object: {e}", True)
             return False, None
 

@@ -28,7 +28,7 @@ class HeartbeatReceiver:
         """
         try:
             return True, cls(cls.__private_key, connection, local_logger)
-        except Exception as e:
+        except (OSError, TypeError, AttributeError) as e:
             local_logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False, None
 
@@ -52,7 +52,7 @@ class HeartbeatReceiver:
         """
         try:
             msg = self.connection.recv_match(type="HEARTBEAT", blocking=True, timeout=1)
-        except Exception as e:
+        except (OSError, TypeError, AttributeError) as e:
             self.logger.error(f"Failed to receive heartbeat: {e}", True)
             self.missed_heartbeats += 1
             if self.missed_heartbeats >= 5:
