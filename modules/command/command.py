@@ -68,17 +68,14 @@ class Command:  # pylint: disable=too-many-instance-attributes
         self.initial_time = None
         self.cur_time = None
 
-    def run(
-        self,
-        telemetry_data: telemetry.TelemetryData
-    ):
+    def run(self, telemetry_data: telemetry.TelemetryData):
         """
         Make a decision based on received telemetry data.
         """
         if telemetry_data is None:
             self.logger.warning("No telemetry data received", True)
             return False, None
-        
+
         # Log average velocity for this trip so far
         if self.initial_time is None:
             self.initial_x = telemetry_data.x
@@ -100,19 +97,29 @@ class Command:  # pylint: disable=too-many-instance-attributes
             avg_vz = delta_vz / total_time
 
             self.logger.info(f"Average velocity: ({avg_vx}, {avg_vy}, {avg_vz}) m/s")
-        
+
         # Use COMMAND_LONG (76) message, assume the target_system=1 and target_componenet=0
         # The appropriate commands to use are instructed below
 
         # Adjust height using the comand MAV_CMD_CONDITION_CHANGE_ALT (113)
         # String to return to main: "CHANGE_ALTITUDE: {amount you changed it by, delta height in meters}"
-        
+
         delta_altitude = self.target.z - telemetry_data.z
 
         if abs(delta_altitude) > 0.5:
             self.logger.info("Adjust drone altitude.", True)
             self.connection.mav.command_long_send(
-                1, 0, mavutil.mavlink.MAV_CMD_CONDITION_CHANGE_ALT, 0, 1, 0, 0, 0, 0, 0, self.target.z,
+                1,
+                0,
+                mavutil.mavlink.MAV_CMD_CONDITION_CHANGE_ALT,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                self.target.z,
             )
             return f"CHANGE_ALTITUDE: {delta_altitude}"
 
@@ -120,7 +127,9 @@ class Command:  # pylint: disable=too-many-instance-attributes
         # String to return to main: "CHANGING_YAW: {degree you changed it by in range [-180, 180]}"
         # Positive angle is counter-clockwise as in a right handed system
 
-        target_angle = math.atan2(self.target.y - telemetry_data.y, self.target.x - telemetry_data.x)
+        target_angle = math.atan2(
+            self.target.y - telemetry_data.y, self.target.x - telemetry_data.x
+        )
         delta_yaw = target_angle - telemetry_data.yaw
         delta_yaw_deg = math.degrees(delta_yaw)
 
@@ -132,12 +141,21 @@ class Command:  # pylint: disable=too-many-instance-attributes
         if abs(delta_yaw_deg) > 5.0:
             self.logger.info("Adjust drone yaw.", True)
             self.connection.mav.command_long_send(
-                1, 0, mavutil.mavlink.MAV_CMD_CONDITION_YAW, 0, delta_yaw_deg, 5, 0, 1, 0, 0, 0,
+                1,
+                0,
+                mavutil.mavlink.MAV_CMD_CONDITION_YAW,
+                0,
+                delta_yaw_deg,
+                5,
+                0,
+                1,
+                0,
+                0,
+                0,
             )
             return f"CHANGING_YAW: {delta_yaw_deg}"
-        
+
         return None
-        
 
 
 # =================================================================================================

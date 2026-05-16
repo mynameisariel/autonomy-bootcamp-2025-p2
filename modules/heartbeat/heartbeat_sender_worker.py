@@ -16,17 +16,14 @@ from ..common.modules.logger import logger
 # =================================================================================================
 #                            ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
 # =================================================================================================
-def heartbeat_sender_worker(
-    connection: mavutil.mavfile,
-    controller: worker_controller
-) -> None:
+def heartbeat_sender_worker(connection: mavutil.mavfile, controller: worker_controller) -> None:
     """
     Worker process - shows that systems is active and responding. Sends a heartbeat message once per second.
 
     connection: MAVlink connection
     controller: communication channel between the main process and this worker
     """
-    
+
     # =============================================================================================
     #                          ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
     # =============================================================================================
@@ -49,7 +46,9 @@ def heartbeat_sender_worker(
     # =============================================================================================
     # Instantiate class object (heartbeat_sender.HeartbeatSender)
 
-    status, heartbeat_sender_instance = heartbeat_sender.HeartbeatSender.create(connection, local_logger)
+    status, heartbeat_sender_instance = heartbeat_sender.HeartbeatSender.create(
+        connection, local_logger
+    )
 
     if not status:
         local_logger.error("Failed to create heartbeat sender instance.", True)
@@ -62,8 +61,6 @@ def heartbeat_sender_worker(
         heartbeat_sender_instance.run()
 
         time.sleep(1)
-
-
 
 
 # =================================================================================================

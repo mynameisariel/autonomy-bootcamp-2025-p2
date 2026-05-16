@@ -108,7 +108,9 @@ class Telemetry:
         combining them together to form a single TelemetryData object.
         """
         # Read MAVLink message LOCAL_POSITION_NED (32)
-        local_position_ned_msg = self.connection.recv_match(type="LOCAL_POSITION_NED", blocking=False, timeout=1)
+        local_position_ned_msg = self.connection.recv_match(
+            type="LOCAL_POSITION_NED", blocking=False, timeout=1
+        )
         # Read MAVLink message ATTITUDE (30)
         attitude_msg = self.connection.recv_match(type="ATTITUDE", blocking=False, timeout=1)
         time.sleep(1)
@@ -126,15 +128,16 @@ class Telemetry:
                 z_velocity=local_position_ned_msg.vz,
                 roll=attitude_msg.roll,
                 pitch=attitude_msg.pitch,
-                yaw=attitude_msg.yaw, 
+                yaw=attitude_msg.yaw,
                 roll_speed=attitude_msg.rollspeed,
                 pitch_speed=attitude_msg.pitchspeed,
-                yaw_speed=attitude_msg.yawspeed
+                yaw_speed=attitude_msg.yawspeed,
             )
             self.logger.info("Telemetry data received successfully", True)
             return True, telemetry_data
         self.logger.error("Error receiving local_position_ned_msg or atitude+msg", True)
         return False, None
+
 
 # =================================================================================================
 #                            ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑

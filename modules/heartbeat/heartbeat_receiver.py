@@ -32,18 +32,13 @@ class HeartbeatReceiver:
             local_logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False, None
 
-    def __init__(
-        self,
-        key: object,
-        connection: mavutil.mavfile,
-        local_logger: logger
-    ) -> None:
+    def __init__(self, key: object, connection: mavutil.mavfile, local_logger: logger) -> None:
         assert key is HeartbeatReceiver.__private_key, "Use create() method"
 
         # Do any intializiation here
         self.connection = connection
         self.logger = local_logger
-        
+
         self.connected = False
         self.missed_heartbeats = 0
 
@@ -63,7 +58,7 @@ class HeartbeatReceiver:
             if self.missed_heartbeats >= 5:
                 self.connected = False
             return self.connected
-    
+
         if msg:
             self.logger.info("Heartbeat received", True)
             self.missed_heartbeats = 0

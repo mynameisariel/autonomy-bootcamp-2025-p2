@@ -19,9 +19,9 @@ from ..common.modules.logger import logger
 def command_worker(
     connection: mavutil.mavfile,
     target: command.Position,
-    controller: worker_controller.WorkerController, 
-    input_queue: queue_proxy_wrapper.QueueProxyWrapper, 
-    output_queue: queue_proxy_wrapper.QueueProxyWrapper
+    controller: worker_controller.WorkerController,
+    input_queue: queue_proxy_wrapper.QueueProxyWrapper,
+    output_queue: queue_proxy_wrapper.QueueProxyWrapper,
 ) -> None:
     """
     Worker process.
@@ -68,6 +68,7 @@ def command_worker(
         output_string = command_instance.run(telemetry_data)
         if output_string is not None:
             output_queue.queue.put(output_string)
+
 
 # =================================================================================================
 #                            ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑

@@ -18,8 +18,8 @@ from ..common.modules.logger import logger
 # =================================================================================================
 def telemetry_worker(
     connection: mavutil.mavfile,
-    controller: worker_controller.WorkerController, 
-    output_queue: queue_proxy_wrapper.QueueProxyWrapper
+    controller: worker_controller.WorkerController,
+    output_queue: queue_proxy_wrapper.QueueProxyWrapper,
 ) -> None:
     """
     Worker process.
@@ -61,6 +61,7 @@ def telemetry_worker(
         success, telemetry_data = telemetry_instance.run()
         if success:
             output_queue.queue.put(telemetry_data)
+
 
 # =================================================================================================
 #                            ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑

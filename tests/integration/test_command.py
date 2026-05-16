@@ -54,8 +54,8 @@ def start_drone() -> None:
 #                            ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
 # =================================================================================================
 def stop(
-    controller: worker_controller.WorkerController, 
-    input_queue: queue_proxy_wrapper.QueueProxyWrapper
+    controller: worker_controller.WorkerController,
+    input_queue: queue_proxy_wrapper.QueueProxyWrapper,
 ) -> None:
     """
     Stop the workers.
@@ -65,7 +65,7 @@ def stop(
 
 
 def read_queue(
-    output_queue:queue_proxy_wrapper, 
+    output_queue: queue_proxy_wrapper,
     controller: worker_controller.WorkerController,
     main_logger: logger.Logger,
 ) -> None:
@@ -82,10 +82,7 @@ def read_queue(
             continue
 
 
-def put_queue(
-    input_queue: queue_proxy_wrapper.QueueProxyWrapper, 
-    path: list
-) -> None:
+def put_queue(input_queue: queue_proxy_wrapper.QueueProxyWrapper, path: list) -> None:
     """
     Place mocked inputs into the input queue periodically with period TELEMETRY_PERIOD.
     """
@@ -244,9 +241,7 @@ def main() -> int:
     # Read the main queue (worker outputs)
     threading.Thread(target=read_queue, args=(output_queue, main_logger)).start()
 
-    command_worker.command_worker(
-        connection, TARGET, controller, input_queue, output_queue
-    )
+    command_worker.command_worker(connection, TARGET, controller, input_queue, output_queue)
     # =============================================================================================
     #                          ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
     # =============================================================================================
