@@ -29,14 +29,14 @@ class HeartbeatSender:
             local_logger.error(f"Failed to create HeartbeatSender: {e}", True)
             return False, None
 
-    def __init__(self, key: object, connection: mavutil.mavfile, local_logger: logger.Logger):
+    def __init__(self, key: object, connection: mavutil.mavfile, local_logger: logger.Logger) -> None:
         assert key is HeartbeatSender.__private_key, "Use create() method"
 
         # Do any intializiation here
         self.connection = connection
         self.logger = local_logger
 
-    def run(self):
+    def run(self) -> bool:
         """
         Attempt to send a heartbeat message.
         """

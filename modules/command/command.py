@@ -38,7 +38,7 @@ class Command:  # pylint: disable=too-many-instance-attributes
         connection: mavutil.mavfile,
         target: Position,
         local_logger: logger.Logger,
-    ):
+    ) -> "tuple[True, Command] | tuple[False, None]":
         """
         Falliable create (instantiation) method to create a Command object.
         """
@@ -68,7 +68,7 @@ class Command:  # pylint: disable=too-many-instance-attributes
         self.initial_time = None
         self.cur_time = None
 
-    def run(self, telemetry_data: telemetry.TelemetryData):
+    def run(self, telemetry_data: telemetry.TelemetryData) -> bool:
         """
         Make a decision based on received telemetry data.
         """
