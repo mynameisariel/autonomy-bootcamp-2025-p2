@@ -1,0 +1,2 @@
+22:51:13: [INFO] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 40] Logger initialized
+22:51:15: [ERROR] [C:\Users\Ariel\WARG\auto-bootcamp\autonomy-bootcamp-2025-p2\tests\integration\mock_drones\heartbeat_sender_drone.py | main | 56] Drone: Sent incorrect message type or didn't recieve a message in time: None

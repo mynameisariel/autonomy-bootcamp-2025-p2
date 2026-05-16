@@ -30,10 +30,13 @@ CONNECTION_STRING = "tcp:localhost:12345"
 #                            ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
 # =================================================================================================
 # Set queue max sizes (<= 0 for infinity)
+QUEUE_MAX_SIZE = 0
 
 # Set worker counts
+WORKER_COUNT = 1
 
 # Any other constants
+TARGET = command.Position(10, 20, 30)
 
 # =================================================================================================
 #                            ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
@@ -74,43 +77,162 @@ def main() -> int:
     #                          ↓ BOOTCAMPERS MODIFY BELOW THIS COMMENT ↓
     # =============================================================================================
     # Create a worker controller
+    controller = worker_controller.WorkerController()
 
     # Create a multiprocess manager for synchronized queues
+    mp_manager = mp.Manager()
 
     # Create queues
+    heartbeat_receiver_to_main_queue = queue_proxy_wrapper.QueueProxyWrapper(mp_manager, QUEUE_MAX_SIZE)
+    telemetry_to_command_queue = queue_proxy_wrapper.QueueProxyWrapper(mp_manager, QUEUE_MAX_SIZE)
+    command_to_main_queue = queue_proxy_wrapper.QueueProxyWrapper(mp_manager, QUEUE_MAX_SIZE)
 
     # Create worker properties for each worker type (what inputs it takes, how many workers)
     # Heartbeat sender
+    status, heartbeat_sender_properties = worker_manager.WorkerProperties.create(
+        count=WORKER_COUNT, 
+        target=heartbeat_sender_worker.heartbeat_sender_worker,
+        work_arguments=(connection), 
+        input_queues=[],
+        output_queues=[],
+        controller=controller,
+        local_logger=main_logger
+    )
+
+    if not status:
+        print("Error: failed to create heartbeat_sender_properties")
+        return -1
 
     # Heartbeat receiver
+    status, heartbeat_receiver_properties = worker_manager.WorkerProperties.create(
+        count=WORKER_COUNT, 
+        target=heartbeat_receiver_worker.heartbeat_receiver_worker,
+        work_arguments=(connection), 
+        input_queues=[],
+        output_queues=[heartbeat_receiver_to_main_queue],
+        controller=controller,
+        local_logger=main_logger
+    )
+
+    if not status:
+        print("Error: failed to create heartbeat_receiver_properties")
+        return -1
 
     # Telemetry
+    status, telemetry_properties = worker_manager.WorkerProperties.create(
+        count=WORKER_COUNT, 
+        target=telemetry_worker.telemetry_worker,
+        work_arguments=(connection), 
+        input_queues=[],
+        output_queues=[telemetry_to_command_queue],
+        controller=controller,
+        local_logger=main_logger
+    )
 
+    if not status:
+        print("Error: failed to create telemetry_properties")
+        return -1
+    
     # Command
+    status, command_properties = worker_manager.WorkerProperties.create(
+        count=WORKER_COUNT, 
+        target=command_worker.command_worker,
+        work_arguments=(connection), 
+        input_queues=[telemetry_to_command_queue],
+        output_queues=[command_to_main_queue],
+        controller=controller,
+        local_logger=main_logger
+    )
+
+    if not status:
+        print("Error: failed to create command_properties")
+        return -1
 
     # Create the workers (processes) and obtain their managers
+    status, heartbeat_sender_manager = worker_manager.WorkerManager.create(
+        worker_properties=heartbeat_sender_properties,
+        local_logger=main_logger,
+    )
+    if not status:
+        print("Error: Failed to create heartbeat_sender_manager")
+        return -1
 
+    status, heartbeat_receiver_manager = worker_manager.WorkerManager.create(
+        worker_properties=heartbeat_receiver_properties,
+        local_logger=main_logger,
+    )
+    if not status:
+        print("Error: Failed to create heartbeat_receiver_manager")
+        return -1
+
+    status, telemetry_manager = worker_manager.WorkerManager.create(
+        worker_properties=telemetry_properties,
+        local_logger=main_logger,
+    )
+    if not status:
+        print("Error: Failed to create telemetry_manager")
+        return -1
+
+    status, command_manager = worker_manager.WorkerManager.create(
+        worker_properties=command_properties,
+        local_logger=main_logger,
+    )
+    if not status:
+        print("Error: Failed to create command_manager")
+        return -1
+    
     # Start worker processes
+    managers = [
+        heartbeat_receiver_manager, 
+        heartbeat_sender_manager, 
+        telemetry_manager, 
+        command_manager
+    ]
+
+    for manager in managers:
+        manager.start_workers()
 
     main_logger.info("Started")
 
     # Main's work: read from all queues that output to main, and log any commands that we make
     # Continue running for 100 seconds or until the drone disconnects
 
+    start_time = time.time()
+    while time.time() - start_time <= 100:
+        try: 
+            status = heartbeat_receiver_to_main_queue.queue.get(block=False)
+            if status == "Disconnected":
+                break
+        except queue.Empty:
+            pass
+        try:
+            msg = command_to_main_queue.queue.get(block=False)
+            main_logger.info(str(msg), True)
+        except queue.Empty:
+            pass
+        time.sleep(0.5)
+
     # Stop the processes
+    controller.request_exit()
 
     main_logger.info("Requested exit")
 
     # Fill and drain queues from END TO START
+    command_to_main_queue.fill_and_drain_queue()
+    telemetry_to_command_queue.fill_and_drain_queue()
+    heartbeat_receiver_to_main_queue.fill_and_drain_queue()
 
     main_logger.info("Queues cleared")
 
     # Clean up worker processes
+    for manager in managers:
+        manager.join_workers()
 
     main_logger.info("Stopped")
 
     # We can reset controller in case we want to reuse it
     # Alternatively, create a new WorkerController instance
+    controller.clear_exit()
 
     # =============================================================================================
     #                          ↑ BOOTCAMPERS MODIFY ABOVE THIS COMMENT ↑
